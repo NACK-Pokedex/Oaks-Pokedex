@@ -1,0 +1,22 @@
+{
+  "name": "oaks-pokedex",
+  "version": "1.0.0",
+  "description": "Back end project for multiverse boot camp back end module.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NACK-Pokedex/Oaks-Pokedex.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NACK-Pokedex/Oaks-Pokedex/issues"
+  },
+  "homepage": "https://github.com/NACK-Pokedex/Oaks-Pokedex#readme",
+  "dependencies": {
+    "nodemon": "^2.0.19"
+  }
+}
