@@ -1,5 +1,6 @@
-{
-    "pokemon": [{
+ const pokemons = [
+    
+     {
       "id": 1,
       "num": "001",
       "name": "Bulbasaur",
@@ -4061,7 +4062,8 @@
         "Ghost",
         "Dark"
       ]
-    }, {
+    }, 
+    {
       "id": 151,
       "num": "151",
       "name": "Mew",
@@ -4082,5 +4084,35 @@
         "Ghost",
         "Dark"
       ]
-    }]
-  }
+    }
+  ];
+
+  const users = [
+   {
+    username: 'profoak',
+    password: 'profpassword'
+   },
+    {
+    username: 'anabel', 
+    password: 'anabelpass'
+   }, 
+   {
+    username: 'carla', 
+    password: 'carlapass'
+   }, 
+   {
+    username: 'keegan', 
+    password: 'keeganpass'
+   }, 
+   {
+    username: 'nicolas', 
+    password: 'nicolaspass'
+   }, 
+   {
+    username: 'linda',
+    password: 'lindapass'
+   }
+
+  ]
+  
+  

@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { Pokemon } = require("../Pokemon");
+const { Pokemon } = require("./db/Pokemon");
 
 //GET/pokemons
 

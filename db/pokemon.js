@@ -15,6 +15,13 @@ const Pokemon = sequelize.define('pokemon', {
   spawn_time: Sequelize.STRING,
   multipliers: Sequelize.ARRAY(Sequelize.BIGINT),
   weaknesses: Sequelize.ARRAY(Sequelize.TEXT),
+  prev_evolution: Sequelize.ARRAY( {
+    num: Sequelize.STRING,
+    name: Sequelize.STRING,
+  },{
+    num: Sequelize.STRING,
+    name: Sequelize.STRING,
+  }),
   next_evolution: Sequelize.ARRAY( {
     num: Sequelize.STRING,
     name: Sequelize.STRING,
