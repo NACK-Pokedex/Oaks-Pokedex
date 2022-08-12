@@ -1,11 +1,5 @@
 const {sequelize} = require('./db');
-const {Pokemon} = require('./pokemon');
-const { pokemon } = require('./seedData');
-
-const seed = async () => {
-  await sequelize.sync({ force: true });
-  await Pokemon.bulkCreate(pokemon);
-};
+const seed = require('./seedFn')
 
 seed()
   .then(() => {

@@ -1,8 +1,14 @@
-const express = require("express");
-const router = express.Router();
+const {Pokemon} = require('./Pokemon')
+const {User} = require('./User')
+const {sequelize, Sequelize} = require('./db')
 
-// different model routers
-router.use('/pokemon', require('./routes'));
+User.hasMany(Pokemon)
+//Scientist Id will let us know which scientist added the pokemon
+Pokemon.belongsTo(User, {foreignKey: 'scientistId'})
 
-
-module.exports = router;
+module.exports = {
+    Pokemon,
+    User,
+    sequelize,
+    Sequelize
+};
