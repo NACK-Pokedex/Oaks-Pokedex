@@ -4,7 +4,7 @@ const morgan = require('morgan');
 const { auth } = require('express-openid-connect');
 
 const app = require('./routes');
-//const { sequelize } = require('./db');
+const { sequelize } = require('./db');
 const express = require("express")
 const appExpress = express()
 const seedFunction = require('./db/seedFn')
@@ -41,7 +41,21 @@ appExpress.use(auth(config));
 
 //user middleware
 
-appExpress.use('/', (req, res) => {
+appExpress.get('/pokemons', async (req, res, next)=>{
+  const user = req.oidc.user
+  const pokemons = await Pokemon.findAll()
+  console.log("Hi")
+  res.send(req.oidc.isAuthenticated() ? 
+  //if
+  pokemons
+  
+  
+  //else
+  : 
+  "You do not have access to this API, Please Login to try again.")
+})
+
+appExpress.get('/login', async (req, res) => {
   const user = req.oidc.user
 
   res.send(req.oidc.isAuthenticated() ? 
@@ -50,10 +64,21 @@ appExpress.use('/', (req, res) => {
   "<h3>Username: "+ user['nickname'] + "</h3>" + "<p>" + 
   user['email'] + "</p>" +
   "<h3>To logout please navigate to logout page</h3> "
-  : 'Logged out');
+  : 'You do not have access to this API, Please Login to try again.');
 })
 
+appExpress.get('/', async (req, res) => {
+  const user = req.oidc.user
 
+  res.send(req.oidc.isAuthenticated() ? 
+  "<h1>Welcome to Pokedex</h1>" +
+  "<h2>Welcome " + user['name'] + "</h2>" +
+  "<h3>Username: "+ user['nickname'] + "</h3>" + "<p>" + 
+  user['email'] + "</p>" +
+  "<h3>To logout please navigate to logout page</h3> "
+  : '<h1>Please login to view our Pokedex</h1>');
+})
+//create single 
 
 
 
@@ -65,7 +90,8 @@ appExpress.use((error, req, res, next) => {
   res.send({error: error.message, name: error.name, message: error.message});
 });
 appExpress.listen(PORT, () => {
-  // sequelize.sync({ force: false });
+  //sequelize.sync({ force: false });
   seedFunction();
+
   console.log(`Pokedex is ready at http://localhost:${PORT}`);
 });
