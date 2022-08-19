@@ -41,14 +41,6 @@ appExpress.use(auth(config));
 
 //user middleware
 
-appExpress.use(async (req, res, next)=>{
-  const [user] = await User.findOrCreate({where: {
-    username: req.oidc.user['nickname'], name: req.oidc.user['name'], 
-    email: req.oidc.user['email']
-
-  }})
-  next()
-})
 appExpress.use('/', (req, res) => {
   const user = req.oidc.user
 
