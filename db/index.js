@@ -4,7 +4,7 @@ const {sequelize, Sequelize} = require('./db')
 
 User.hasMany(Pokemon)
 //Scientist Id will let us know which scientist added the pokemon
-Pokemon.belongsTo(User, {foreignKey: 'scientistId'})
+Pokemon.belongsTo(User)
 
 module.exports = {
     Pokemon,
