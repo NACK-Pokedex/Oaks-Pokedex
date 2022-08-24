@@ -36,6 +36,8 @@ const {
   PORT
 } = process.env
 
+
+
 //attach autho0 oidc auth router
 appExpress.use(auth(config));
 
@@ -79,7 +81,18 @@ appExpress.get('/', async (req, res) => {
   : '<h1>Please login to view our Pokedex</h1>');
 })
 //create single 
-
+appExpress.get('/:id', async (req, res) => {
+  const pokemon = await Pokemon.findByPk(req.params.id)
+  res.send(req.oidc.isAuthenticated() ? 
+  "<h1>Pokemon Appears</h1>" +
+  "<h2>Here is " + pokemon.name + "</h2>" +
+  "<h3>Number: "+ pokemon.num + "</h3>" + 
+  "<img src={pokemon.img} alt={pokemon.name} >" +
+  "<h3>To logout please navigate to logout page</h3> "
+  : 
+  "You do not have access to this API, Please Login to try again."
+  );
+})
 
 
 
