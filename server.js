@@ -87,8 +87,8 @@ appExpress.get('/:id', async (req, res) => {
   "<h1>Pokemon Appears</h1>" +
   "<h2>Here is " + pokemon.name + "</h2>" +
   "<h3>Number: "+ pokemon.num + "</h3>" + 
-  "<img src={pokemon.img} alt={pokemon.name} >" +
-  "<h3>To logout please navigate to logout page</h3> "
+  `<img src='http://www.serebii.net/pokemongo/pokemon/${pokemon.num}.png' >`+
+  "<h3>To logout please navigate to logout page</h3>" 
   : 
   "You do not have access to this API, Please Login to try again."
   );
