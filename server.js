@@ -3,6 +3,9 @@ const cors = require('cors')
 const morgan = require('morgan');
 const { auth } = require('express-openid-connect');
 const path = require('path');
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import Card from 'app/src/Components/Card.js'
 
 const app = require('./routes');
 const { sequelize } = require('./db');
