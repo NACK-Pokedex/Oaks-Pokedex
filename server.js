@@ -2,6 +2,7 @@ require('dotenv').config('.env');
 const cors = require('cors')
 const morgan = require('morgan');
 const { auth } = require('express-openid-connect');
+const path = require('path');
 
 const app = require('./routes');
 const { sequelize } = require('./db');
@@ -16,6 +17,7 @@ app.use(cors());
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
+app.use('/public', express.static('public'));
 
 
 //destructure config environment, and import env variables
@@ -83,15 +85,11 @@ appExpress.get('/', async (req, res) => {
 //create single 
 appExpress.get('/:id', async (req, res) => {
   const pokemon = await Pokemon.findByPk(req.params.id)
-  res.send(req.oidc.isAuthenticated() ? 
-  "<h1>Pokemon Appears</h1>" +
-  "<h2>Here is " + pokemon.name + "</h2>" +
-  "<h3>Number: "+ pokemon.num + "</h3>" + 
-  `<img src='http://www.serebii.net/pokemongo/pokemon/${pokemon.num}.png' >`+
-  "<h3>To logout please navigate to logout page</h3>" 
-  : 
-  "You do not have access to this API, Please Login to try again."
-  );
+
+  console.log(path.join(__dirname, '/pokemon2.html'));
+
+  res.sendFile( req.oidc.isAuthenticated ? path.join(__dirname, '/pokemon2.html') :  path.join(__dirname, '/pokemonError.html'));
+  
 })
 
 

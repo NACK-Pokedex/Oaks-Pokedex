@@ -4,6 +4,7 @@ const Pokemon = sequelize.define('pokemon', {
   num: Sequelize.STRING,
   name: Sequelize.STRING,
   img: Sequelize.STRING,
+  type: Sequelize.STRING,
   height: Sequelize.STRING,
   weight: Sequelize.STRING,
   candy: Sequelize.STRING,
