@@ -62,8 +62,16 @@ appExpress.get('/pokemons', async (req, res, next)=>{
 
 appExpress.get('/login', async (req, res) => {
   const user = req.oidc.user
-
-  res.send(req.oidc.isAuthenticated() ? 
+//if user is authenticated create user
+let admin = false
+if(user['email'].endsWith('@OakCorp.net')){
+  admin = True
+}
+//create a varaible that will equal to the the hashed password
+await User.Create({username: user['nickname'], name:user['name'],
+email:user['email'], isAdmin: admin, password: /*insert password variable*/})
+  res.send(req.oidc.isAuthenticated() ?
+  
   "<h1>My PokeDex</h1>" +
   "<h2>Welcome " + user['name'] + "</h2>" +
   "<h3>Username: "+ user['nickname'] + "</h3>" + "<p>" + 
