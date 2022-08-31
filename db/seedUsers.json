@@ -4,7 +4,8 @@
             "username": "carla_d",
             "name": "carla",
             "password": "carlapass",
-            "email": "carla@email.com"
+            "email": "carla@email.com",
+            "isAdmin": false
         }
     ]
 

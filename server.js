@@ -60,34 +60,40 @@ appExpress.get('/pokemons', async (req, res, next)=>{
   "You do not have access to this API, Please Login to try again.")
 })
 
-appExpress.get('/login', async (req, res) => {
-  const user = req.oidc.user
-//if user is authenticated create user
-let admin = false
-if(user['email'].endsWith('@OakCorp.net')){
-  admin = True
-}
-//create a varaible that will equal to the the hashed password
-await User.Create({username: user['nickname'], name:user['name'],
-email:user['email'], isAdmin: admin, password: /*insert password variable*/})
-  res.send(req.oidc.isAuthenticated() ?
-  
-  "<h1>My PokeDex</h1>" +
-  "<h2>Welcome " + user['name'] + "</h2>" +
-  "<h3>Username: "+ user['nickname'] + "</h3>" + "<p>" + 
-  user['email'] + "</p>" +
-  "<h3>To logout please navigate to logout page</h3> "
-  : console.log(AUTH0_CLIENTID),
-  'You do not have access to this API, Please Login to try again.');
+appExpress.get('/users/:id', async (req, res) => {
+  const userId = req.params.id
+  const user = await User.findByPk(userId)
+  res.send(user)
 })
+
+// appExpress.get('/login', async (req, res) => {
+//   const user = req.oidc.user
+// //if user is authenticated create user
+// let admin = false
+// if(user['email'].endsWith('@OakCorp.net')){
+//   admin = True
+// }
+// //create a varaible that will equal to the the hashed password
+// await User.Create({username: user['nickname'], name:user['name'],
+// email:user['email'], isAdmin: admin, password: /*insert password variable*/})
+//   res.send(req.oidc.isAuthenticated() ?
+  
+//   "<h1>My PokeDex</h1>" +
+//   "<h2>Welcome " + user['name'] + "</h2>" +
+//   "<h3>Username: "+ user['nickname'] + "</h3>" + "<p>" + 
+//   user['email'] + "</p>" +
+//   "<h3>To logout please navigate to logout page</h3> "
+//   : console.log(AUTH0_CLIENTID),
+//   'You do not have access to this API, Please Login to try again.');
+// })
 
 appExpress.get('/', async (req, res) => {
   const user = req.oidc.user
 
   res.send(req.oidc.isAuthenticated() ? 
   "<h1>Welcome to Pokedex</h1>" +
-  "<h2>Welcome " + user['name'] + "</h2>" +
-  "<h3>Username: "+ user['nickname'] + "</h3>" + "<p>" + 
+  // "<h2>Welcome " + user['name'] + "</h2>" +
+  // "<h3>Username: "+ user['nickname'] + "</h3>" + "<p>" + 
   user['email'] + "</p>" +
   "<h3>To logout please navigate to logout page</h3> "
   : '<h1>Please login to view our Pokedex</h1>');
@@ -97,9 +103,9 @@ appExpress.get('/:id', async (req, res) => {
   const pokemon = await Pokemon.findByPk(req.params.id)
   res.send(req.oidc.isAuthenticated() ? 
   "<h1>Pokemon Appears</h1>" +
-  "<h2>Here is " + pokemon.name + "</h2>" +
-  "<h3>Number: "+ pokemon.num + "</h3>" + 
-  `<img src='http://www.serebii.net/pokemongo/pokemon/${pokemon.num}.png' >`+
+  // "<h2>Here is " + pokemon.name + "</h2>" +
+  // "<h3>Number: "+ pokemon.num + "</h3>" + 
+  // `<img src='http://www.serebii.net/pokemongo/pokemon/${pokemon.num}.png' >`+
   "<h3>To logout please navigate to logout page</h3>" 
   : 
   "You do not have access to this API, Please Login to try again."
