@@ -106,6 +106,38 @@ appExpress.get('/:id', async (req, res) => {
   );
 })
 
+appExpress.put('/update/:id', async (req, res) => {
+  await Pokemon.update(req.body, {
+      where : {id : req.params.id}
+  });
+  res.send(req.oidc.isAuthenticated() ?
+  "Updating Pokemon"
+  :
+  "You do not have access to this API, Please Login to try again."
+  );
+})
+
+appExpress.post('/newPokemon', async (req, res) => {
+  await Pokemon.create(req.body)
+  res.send(req.oidc.isAuthenticated() ?
+  "Pokemon Created"
+  :
+  "You do not have access to this API, Please Login to try again."
+  );
+  
+})
+
+appExpress.delete('/delete/:id', async (req, res) => {
+  await Pokemon.destroy({
+  where : {id : req.params.id}
+});
+
+res.send(req.oidc.isAuthenticated() ?
+  "Pokemon Deleted"
+  :
+  "You do not have access to this API, Please Login to try again."
+  );
+})
 
 appExpress.use((error, req, res, next) => {
   console.error('SERVER ERROR: ', error);
