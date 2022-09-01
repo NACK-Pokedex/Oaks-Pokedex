@@ -8,6 +8,11 @@ const express = require("express")
 const appExpress = express()
 const seedFunction = require('./db/seedFn')
 
+const authConfig = require("./auth-config.json");
+const { expressjwt: jwt } = require("express-jwt");
+const jwksRsa = require("jwks-rsa");
+const jwtAuthz = require("express-jwt-authz");
+
 const { User, Pokemon } = require('./db');
 const dotenv = require("dotenv")
 dotenv.config()
@@ -16,7 +21,6 @@ app.use(cors());
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
-
 
 //destructure config environment, and import env variables
 
@@ -34,9 +38,28 @@ const config = {
 //attach autho0 oidc auth router
 appExpress.use(auth(config));
 
+if (!authConfig.domain || !authConfig.audience) {
+  throw new Error(
+    "Please make sure that auth_config.json is in place and populated"
+  );
+}
+// Need to fix the token, token is invalid
+const authorizeAccessToken = jwt({
+  secret: "super secret",
+  audience: authConfig.audience,
+  issuer: `https://${authConfig.domain}/`,
+  algorithms: ["RS256"]
+  
+});
+console.log(authorizeAccessToken);
+
+const checkPermissions = jwtAuthz(["read:pokemon", "create:pokemon"], {
+  customScopeKey: "permissions",
+  checkAllScopes: true
+});
 //user middleware
 
-appExpress.get('/pokemons', async (req, res, next)=>{
+appExpress.get('/pokemons', async (req, res, next)=> {
   const user = req.oidc.user
   const pokemons = await Pokemon.findAll()
   const all = []
@@ -48,9 +71,6 @@ appExpress.get('/pokemons', async (req, res, next)=>{
   
   //map
   
-
-  
-  
   res.send(req.oidc.isAuthenticated() ? 
   //if
   all.map(poke =>`<h1>${poke.name}</h1><br><h2>${poke.num}</h2>`).join('')
@@ -59,6 +79,19 @@ appExpress.get('/pokemons', async (req, res, next)=>{
   : 
   "You do not have access to this API, Please Login to try again.")
 })
+
+appExpress.get("/api/protected", authorizeAccessToken, (req, res) => {
+  res.send({
+    msg: "You called the protected endpoint!"
+  });
+});
+
+appExpress.get("/api/role", authorizeAccessToken, checkPermissions, (req, res) => {
+  res.send({
+    msg: "You called the role endpoint!"
+  })
+});
+
 
 appExpress.get('/users/:id', async (req, res) => {
   const userId = req.params.id
