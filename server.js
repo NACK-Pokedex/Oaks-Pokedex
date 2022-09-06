@@ -145,10 +145,10 @@ appExpress.get('/:id', async (req, res) => {
     "<input type='submit' value='See all Pokemon' />" +
   "</form>" + 
   "<form action='/newPokemon'>" +
-      "<input type='url' value='Add Pokemon' />" +
+      "<input type='submit' value='Add Pokemon' />" +
   "</form>" + 
   "<form action='/update'>" +
-      "<input type='button' value='Update Pokemon' />" +
+      "<input type='submit' value='Update Pokemon' />" +
   "</form>" + 
   "<form action='/delete'>" +
       "<input type='submit' value='Delete Pokemon' />" +
