@@ -22,6 +22,7 @@ app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
+
 //destructure config environment, and import env variables
 
 //IMPORT ENV VARS
@@ -133,24 +134,37 @@ appExpress.get('/', async (req, res) => {
 })
 //create single 
 appExpress.get('/:id', async (req, res) => {
-  const pokemon = await Pokemon.findByPk(req.params.id)
-  res.send(req.oidc.isAuthenticated() ? 
+  const pokemon = await Pokemon.findByPk(req.params.id);
+  
+  res.send(req.oidc.isAuthenticated() ?
   "<h1>Pokemon Appears</h1>" +
-  // "<h2>Here is " + pokemon.name + "</h2>" +
-  // "<h3>Number: "+ pokemon.num + "</h3>" + 
-  // `<img src='http://www.serebii.net/pokemongo/pokemon/${pokemon.num}.png' >`+
+  "<h2>Here is " + pokemon.name + "</h2>" +
+  "<h3>Number: "+ pokemon.num + "</h3>" + 
+  `<img src='http://www.serebii.net/pokemongo/pokemon/${pokemon.num}.png' >`+
+  "<form action='/pokemons'>" +
+    "<input type='submit' value='See all Pokemon' />" +
+  "</form>" + 
+  "<form action='/newPokemon'>" +
+      "<input type='url' value='Add Pokemon' />" +
+  "</form>" + 
+  "<form action='/update'>" +
+      "<input type='button' value='Update Pokemon' />" +
+  "</form>" + 
+  "<form action='/delete'>" +
+      "<input type='submit' value='Delete Pokemon' />" +
+  "</form>" + 
   "<h3>To logout please navigate to logout page</h3>" 
   : 
   "You do not have access to this API, Please Login to try again."
   );
 })
 
-appExpress.put('/update/:id', async (req, res) => {
+appExpress.put('/update', async (req, res) => {
   await Pokemon.update(req.body, {
       where : {id : req.params.id}
   });
   res.send(req.oidc.isAuthenticated() ?
-  "Updating Pokemon"
+  "<h1>Updated Pokemon</h1>"
   :
   "You do not have access to this API, Please Login to try again."
   );
@@ -159,14 +173,14 @@ appExpress.put('/update/:id', async (req, res) => {
 appExpress.post('/newPokemon', async (req, res) => {
   await Pokemon.create(req.body)
   res.send(req.oidc.isAuthenticated() ?
-  "Pokemon Created"
+  "<h1>Pokemon Created</h1>"
   :
   "You do not have access to this API, Please Login to try again."
   );
   
 })
 
-appExpress.delete('/delete/:id', async (req, res) => {
+appExpress.delete('/delete', async (req, res) => {
   await Pokemon.destroy({
   where : {id : req.params.id}
 });
